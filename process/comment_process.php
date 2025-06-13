@@ -47,7 +47,9 @@ try {
     exit;
 } catch (PDOException $e) {
     error_log("Erro ao adicionar comentário: " . $e->getMessage());
-    header("Location: ../pages/post/view.php?id=$post_id&error=erro_comentario");
+    // Exibe o erro na tela para debug
+    echo "<pre>Erro ao adicionar comentário: " . $e->getMessage() . "</pre>";
+    var_dump($post_id, $_SESSION['user_id'], $texto, $parent_id);
     exit;
 }
 ?>

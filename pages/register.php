@@ -26,7 +26,15 @@ include '../includes/header.php';
                 ?>
             </div>
         <?php endif; ?>
-        
+        <div class="form-group">
+            <label for="bio">Bio:</label>
+            <textarea id="bio" name="bio" rows="3" maxlength="500" placeholder="Fale um pouco sobre você"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="profile_pic">Foto de Perfil:</label>
+            <input type="file" id="profile_pic" name="profile_pic" accept="image/*">
+        </div>
         <form action="../process/register_process.php" method="post">
             <div class="form-group">
                 <label for="nome">Nome Completo:</label>

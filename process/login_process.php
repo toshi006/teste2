@@ -43,20 +43,7 @@ $_SESSION['user_id'] = $user['id'];
 $_SESSION['user_email'] = $user['email'];
 $_SESSION['user_name'] = $user['nome'];
 $_SESSION['user_role'] = $user['tipo'];
-
-// Cookie de "Lembrar de mim" (opcional)
-if ($remember) {
-    $token = bin2hex(random_bytes(32));
-    $expiry = time() + 60 * 60 * 24 * 30; // 30 dias
-    
-    // Salvar token no banco de dados
-    $stmt = $pdo->prepare("UPDATE usuarios SET remember_token = ?, token_expiry = ? WHERE id = ?");
-    $stmt->execute([$token, date('Y-m-d H:i:s', $expiry), $user['id']]);
-    
-    // Definir cookie
-    setcookie('remember_token', $token, $expiry, '/');
-}
-
+            
 // Redirecionar para a página inicial
 header("Location: ../pages/home.php");
 exit;

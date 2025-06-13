@@ -4,11 +4,10 @@ require_once '../includes/functions.php';
 
 // Verificar se o formulário foi submetido
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: ../pages/register.php");
+    header("Location: " . BASE_URL . "pages/register.php");
     exit;
 }
-
-// Obter e sanitizar dados do formulário
+ // Obter e sanitizar dados do formulário
 $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 $password = $_POST['password'] ?? '';

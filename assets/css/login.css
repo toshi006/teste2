@@ -1,0 +1,108 @@
+/* Estilo da página de login */
+body {
+    background-color: #f2f4f8;
+    color: #333;
+}
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 160px); /* Compensa header e footer fixos */
+    background-color: #f2f4f8;
+    padding: 2rem;
+}
+
+.login-form {
+    background-color: #fff;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.login-form h2 {
+    margin-bottom: 2rem;
+    color: #1e1e2f;
+    font-size: 1.8rem;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #00bcd4;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #00bcd4;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #009cb2;
+}
+
+.alert {
+    padding: 1rem;
+    background-color: #ffe6e6;
+    color: #b30000;
+    border: 1px solid #ffcccc;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.auth-links {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.auth-links a {
+    color: #00bcd4;
+    transition: color 0.3s;
+}
+
+.auth-links a:hover {
+    color: #008ca1;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+    .login-form {
+        padding: 2rem;
+    }
+
+    .auth-links {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: center;
+    }
+}

@@ -1,0 +1,114 @@
+.main-content > .quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.quiz-container {
+    max-width: 800px;
+    margin: 6rem auto;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 1.5px 4px rgba(0,0,0,0.08);
+    text-align: left;
+}
+
+.quiz-container h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+.quiz-container .lead {
+    font-size: 1.1rem;
+    color: #6c757d;
+    text-align: left;
+}
+
+.quiz-description {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+    padding: 1rem;
+    font-style: italic;
+    color: #333;
+    border-radius: 0.25rem;
+    margin-top: 0.5rem;      /* Garante espaçamento abaixo do título */
+    margin-bottom: 1rem;     /* Espaço antes do próximo conteúdo */
+    display: block;          /* Garante quebra de linha */
+}
+
+.pergunta.card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-top: 1rem;        /* Espaço entre o título/descrição e o card */
+}
+
+.pergunta .card-body {
+    padding: 1.5rem;
+    display: block;          /* Garante quebra de linha */
+    margin-top: 0;           /* Remove espaçamento extra acima */
+}
+
+.pergunta h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pergunta .question-number {
+    font-weight: bold;
+    margin-right: 0.5rem;
+    color: #0d6efd;
+}
+
+.opcoes .form-check {
+    padding-left: 1.8rem;
+    position: relative;
+}
+
+.opcoes .form-check-input {
+    position: absolute;
+    left: 0;
+    top: 0.35rem;
+}
+
+.opcoes .form-check-label {
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+input[type="text"].form-control {
+    font-size: 1rem;
+    padding: 0.6rem;
+}
+.pergunta.card{
+    margin-bottom: 1.5rem; /* Espaço interno inferior */
+}
+/* Botão enviar */
+#quiz-form .btn-primary {
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Responsividade extra */
+@media (max-width: 576px) {
+    .quiz-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .pergunta h3 {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

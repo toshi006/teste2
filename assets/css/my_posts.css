@@ -1,0 +1,120 @@
+/* Container principal */
+.main-content > .container {
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 0 1rem;
+}
+
+/* Título */
+.main-content > .container h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Botão criar novo */
+.btn-primary {
+    background-color: #00bcd4;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background-color: #0097a7;
+}
+
+/* Tabela de posts */
+.posts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.posts-table thead {
+    background-color: #1e1e2f;
+    color: #fff;
+}
+
+.posts-table th, .posts-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.posts-table td a {
+    color: #00bcd4;
+    text-decoration: none;
+}
+
+.posts-table td a:hover {
+    text-decoration: underline;
+}
+
+/* Ações */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-small {
+    background-color: #f0f0f0;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: #333;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-small:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-danger {
+    background-color: #e53935;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c62828;
+}
+
+/* Paginação */
+.pagination {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pagination .btn {
+    background-color: #f0f0f0;
+    padding: 0.5rem 0.9rem;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.pagination .btn:hover {
+    background-color: #e0e0e0;
+}
+
+.pagination .btn.active {
+    background-color: #00bcd4;
+    color: #fff;
+}

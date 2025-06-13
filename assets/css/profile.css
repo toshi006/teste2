@@ -1,0 +1,134 @@
+.main-content > .container {
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 1rem;
+}
+
+/* Cabeçalho do perfil */
+.profile-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1.5rem;
+}
+
+.profile-avatar img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #00bcd4;
+}
+
+.profile-info h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #333;
+}
+
+.profile-role {
+    color: #777;
+    font-weight: 500;
+    margin: 0.3rem 0;
+}
+
+.profile-joined {
+    font-size: 0.9rem;
+    color: #999;
+}
+
+.profile-bio {
+    margin-top: 1rem;
+    font-style: italic;
+    color: #444;
+}
+
+/* Seções de posts e quizzes */
+.profile-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.profile-posts,
+.profile-quizzes {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
+}
+
+.profile-posts h2,
+.profile-quizzes h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #00bcd4;
+}
+
+.posts-list .post-item,
+.quizzes-list .quiz-item {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.posts-list .post-item h3,
+.quizzes-list .quiz-item h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.posts-list .post-item h3 a,
+.quizzes-list .quiz-item h3 a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.posts-list .post-item h3 a:hover,
+.quizzes-list .quiz-item h3 a:hover {
+    color: #00bcd4;
+}
+
+.post-meta,
+.quiz-meta {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 0.3rem;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0097a7;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-sections {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-avatar img {
+        width: 100px;
+        height: 100px;
+    }
+}

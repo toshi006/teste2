@@ -3,6 +3,8 @@ require_once '../includes/auth.php';
 require_once '../includes/db.php';
 require_once '../includes/functions.php';
 
+require_once __DIR__ . '/../includes/config.php';
+$pageTitle = "Página Inicial";
 // Redirecionar usuários não logados para a página de login
 if (!isLoggedIn()) {
     header("Location: login.php");
@@ -34,7 +36,8 @@ include '../includes/header.php';
 
 <div class="container">
     <h1>Bem-vindo ao Sistema Educacional</h1>
-    
+    <p>Uma plataforma para o aprendizado e compartilhamento de conhecimento.<p>
+    <div class="posts">
     <section class="recent-posts">
         <h2>Posts Recentes</h2>
         <div class="posts-grid">
@@ -54,13 +57,7 @@ include '../includes/header.php';
         </div>
         <a href="quiz/list.php" class="btn">Ver Todos os Quizzes</a>
     </section>
-    
-    <?php if (getUserRole() === 'professor' || getUserRole() === 'admin'): ?>
-        <div class="quick-actions">
-            <a href="post/create.php" class="btn btn-primary">Criar Novo Post</a>
-            <a href="quiz/create.php" class="btn btn-primary">Criar Novo Quiz</a>
-        </div>
-    <?php endif; ?>
+    </div>
 </div>
 
 <?php include '../includes/footer.php'; ?>

@@ -37,12 +37,6 @@ include '../includes/header.php';
                 <input type="password" id="password" name="password" required>
             </div>
             
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" name="remember"> Lembrar de mim
-                </label>
-            </div>
-            
             <button type="submit" class="btn btn-primary">Entrar</button>
         </form>
         

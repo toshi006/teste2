@@ -23,7 +23,7 @@ if ($action === 'criar_quiz') {
     require 'process_quiz_creation.php';
 } else {
     // Processar respostas do quiz
-    require 'process_quiz_responses.php';
+    require '../process/process_quiz_responses.php';
 }
 
 // --- Arquivo process_quiz_creation.php ---
@@ -103,7 +103,7 @@ try {
 }
 ?>
 
-// --- Arquivo process_quiz_responses.php ---
+<!-- // --- Arquivo process_quiz_responses.php --- -->
 <?php
 // Obter dados do formulário
 $quiz_id = filter_input(INPUT_POST, 'quiz_id', FILTER_VALIDATE_INT);
