@@ -60,7 +60,7 @@ $stmt->bindValue(count($params) + 1, (int)$per_page, PDO::PARAM_INT);
 $stmt->bindValue(count($params) + 2, (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $posts = $stmt->fetchAll();
-
+include '../templates/quizz_card.php';
 // Contar total de quizzes para paginação
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM ($query) as total");
 $stmt->execute($params);
@@ -135,7 +135,7 @@ include '../../includes/header.php';
                             <p class="card-text mt-2"><?= htmlspecialchars($quiz['descricao']) ?></p>
                         <?php endif; ?>
                         
-                        <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="buttons">
                             <a href="take.php?id=<?= $quiz['id'] ?>" class="btn btn-sm btn-primary">Responder Quiz</a>
 
                             <?php if (hasAnyRole(['professor', 'admin']) && ($_SESSION['user_id'] == $quiz['usuario_id'] || hasAnyRole(['admin']))): ?>
@@ -155,29 +155,6 @@ include '../../includes/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
-        
-        <!-- Paginação -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <?php if ($current_page > 1): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $current_page - 1])) ?>">Anterior</a>
-                    </li>
-                <?php endif; ?>
-                
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <li class="page-item <?= $i == $current_page ? 'active' : '' ?>">
-                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
-                
-                <?php if ($current_page < $total_pages): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $current_page + 1])) ?>">Próxima</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
     <?php else: ?>
         <div class="alert alert-info">Nenhum quiz encontrado com os filtros selecionados.</div>
     <?php endif; ?>

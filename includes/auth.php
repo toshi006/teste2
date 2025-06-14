@@ -13,7 +13,7 @@ function login($email, $password) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $user['email'];
         $_SESSION['user_name'] = $user['nome'];
-        $_SESSION['user_role'] = $user['tipo']; // Supondo que 'tipo' é o campo de role no BD
+        $_SESSION['user_role'] = $user['tipo']; 
         return true;
     }
     

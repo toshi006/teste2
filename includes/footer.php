@@ -1,6 +1,6 @@
         </main> <!-- Fecha a tag main aberta no header -->
         
-        <footer class="main-footer">
+        <footer class="my-footer">
             <div class="container">
                 <div class="footer-grid">
                     <div class="footer-section">

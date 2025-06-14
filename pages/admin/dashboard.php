@@ -90,6 +90,10 @@ include_once '../../includes/header.php';
     }
 }
 </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
 <div class="container mt-5" style="padding-top: 6rem;">
     <header class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">Painel de Controle</h1>

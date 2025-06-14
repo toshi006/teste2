@@ -21,7 +21,7 @@ define('ROLE_ADMIN', 'admin');
 define('ROLE_TEACHER', 'professor');
 define('ROLE_STUDENT', 'aluno');
 
-// Configuração de erro reporting
+
 if (ENVIRONMENT === 'development') {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);

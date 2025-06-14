@@ -16,66 +16,68 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <title><?= htmlspecialchars($pageTitle ?? 'Sistema Educacional', ENT_QUOTES, 'UTF-8') ?></title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/reset.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/header.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/footer.css">
+    <link rel="stylesheet" href="/teste2/assets/css/reset.css">
+    <link rel="stylesheet" href="/teste2/assets/css/style.css">
+    <link rel="stylesheet" href="/teste2/assets/css/header.css">
+    <link rel="stylesheet" href="/teste2/assets/css/footer.css">
     
     <!-- CSS específico por página -->
-    <?php if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/Teste2/assets/css/' . basename($_SERVER['PHP_SELF'], '.php') . '.css')): ?>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/<?= basename($_SERVER['PHP_SELF'], '.php') ?>.css">
+    <?php
+        $cssFile = strtolower(basename($_SERVER['PHP_SELF'], '.php'));
+        $cssPath = $_SERVER['DOCUMENT_ROOT'] . "/teste2/assets/css/{$cssFile}.css";
+        if (file_exists($cssPath)):
+    ?>
+        <link rel="stylesheet" href="/teste2/assets/css/<?= $cssFile ?>.css">
     <?php endif; ?>
     
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
 
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
+    <header class="main_header">
+        <div class="container-header">
             <div class="logo">
-                <a href="<?= BASE_URL ?>/pages/home.php">
-                    <img src="<?= BASE_URL ?>/assets/images/logo.png" alt="Logo Sistema Educacional">
+                <a href="/teste2/pages/home.php">
+                    <img src="/teste2/assets/images/logo.png" alt="Logo Sistema Educacional">
                 </a>
             </div>
             
-            <nav class="main-nav">
+            <nav class="main_nav">
                 <ul>
                     <li class="<?= ($current_page == 'home.php') ? 'active' : '' ?>">
-                        <a href="<?= BASE_URL ?>/pages/home.php"><i class="fas fa-home"></i> Início</a>
+                        <a href="/teste2/pages/home.php"><i class="fas fa-home"></i> Início</a>
                     </li>
                     
                     <li class="<?= (strpos($current_page, 'post/') !== false) ? 'active' : '' ?>">
-                        <a href="<?= BASE_URL ?>/pages/post/list.php"><i class="fas fa-book"></i> Posts</a>
+                        <a href="/teste2/pages/post/list.php"><i class="fas fa-book"></i> Posts</a>
                     </li>
                     
                     <li class="<?= (strpos($current_page, 'quiz/') !== false) ? 'active' : '' ?>">
-                        <a href="<?= BASE_URL ?>/pages/quiz/list.php"><i class="fas fa-question-circle"></i> Quizzes</a>
+                        <a href="/teste2/pages/quiz/list.php"><i class="fas fa-question-circle"></i> Quizzes</a>
                     </li>
 
                     <?php if (isLoggedIn()): ?>
                         <li class="dropdown <?= (strpos($current_page, 'user/') !== false || strpos($current_page, 'admin/') !== false) ? 'active' : '' ?>">
                             <a href="#"><i class="fas fa-user"></i> <?= e($_SESSION['user_name']) ?></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?= BASE_URL ?>/pages/user/profile.php"><i class="fas fa-user-circle"></i> Perfil</a></li>
-                                <li><a href="<?= BASE_URL ?>/pages/user/my_posts.php"><i class="fas fa-file-alt"></i> Meus Posts</a></li>
-                                <li><a href="<?= BASE_URL ?>/pages/user/my_quizzes.php"><i class="fas fa-list"></i> Meus Quizzes</a></li>
+                                <li><a href="/teste2/pages/user/profile.php"><i class="fas fa-user-circle"></i> Perfil</a></li>
+                                <li><a href="/teste2/pages/user/my_posts.php"><i class="fas fa-file-alt"></i> Meus Posts</a></li>
+                                <li><a href="/teste2/pages/user/my_quizzes.php"><i class="fas fa-list"></i> Meus Quizzes</a></li>
                                 <li class="divider"></li>
                                 <?php if (hasAnyRole([ROLE_ADMIN, ROLE_TEACHER])): ?>
-                                    <li><a href="<?= BASE_URL ?>/pages/admin/dashboard.php"><i class="fas fa-cog"></i> Painel Admin</a></li>
+                                    <li><a href="/teste2/pages/admin/dashboard.php"><i class="fas fa-cog"></i> Painel Admin</a></li>
                                 <?php endif; ?>
-                                <li><a href="<?= BASE_URL ?>/process/logout_process.php"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                                <li><a href="/teste2/process/logout_process.php"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                             </ul>
                         </li>
                     <?php else: ?>
                         <li class="<?= ($current_page == 'login.php') ? 'active' : '' ?>">
-                            <a href="<?= BASE_URL ?>/pages/login.php"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="/teste2/pages/login.php"><i class="fas fa-sign-in-alt"></i> Login</a>
                         </li>
                         <li class="<?= ($current_page == 'register.php') ? 'active' : '' ?>">
-                            <a href="<?= BASE_URL ?>/pages/register.php"><i class="fas fa-user-plus"></i> Registrar</a>
+                            <a href="/teste2/pages/register.php"><i class="fas fa-user-plus"></i> Registrar</a>
                         </li>
                     <?php endif; ?>
                 </ul>

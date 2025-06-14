@@ -15,15 +15,12 @@ if (!$quiz_id) {
 }
 
 // Buscar informações do quiz
-$stmt = $pdo->prepare("SELECT q.*, p.usuario_id as post_autor_id 
-                      FROM quizzes q 
-                      JOIN posts p ON q.post_id = p.id 
-                      WHERE q.id = ?");
+$stmt = $pdo->prepare("SELECT *, usuario_id as post_autor_id FROM quizzes WHERE id = ?");
 $stmt->execute([$quiz_id]);
 $quiz = $stmt->fetch();
 
 // Verificar permissões (apenas autor do post ou admin)
-if (!$quiz || ($_SESSION['user_id'] != $quiz['post_autor_id'] && !hasRole('admin'))) {
+if (!$quiz || ($_SESSION['user_id'] != $quiz['post_autor_id'] && !hasAnyRole(['admin']))) {
     header("Location: /pages/home.php?error=permissao_negada");
     exit;
 }
@@ -51,11 +48,11 @@ try {
     
     $pdo->commit();
     
-    header("Location: /pages/home.php?success=quiz_excluido");
+    header("Location: ../../pages/user/my_quizzes.php?success=quiz_excluido");
     exit;
 } catch (PDOException $e) {
     $pdo->rollBack();
-    header("Location: view.php?id=$quiz_id&error=erro_exclusao");
+    header("Location: ../../pages/user/my_quizzes.php?error=erro_exclusao");
     exit;
 }
 ?>

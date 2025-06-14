@@ -21,17 +21,15 @@ $stmt->execute();
 $recentPosts = $stmt->fetchAll();
 
 // Buscar quizzes populares
-$stmt = $pdo->prepare("SELECT q.*, COUNT(r.id) as tentativas 
-                      FROM quizzes q
-                      LEFT JOIN respostas_usuarios r ON q.id = r.quiz_id
-                      GROUP BY q.id
-                      ORDER BY tentativas DESC
-                      LIMIT 3");
+$stmt = $pdo->prepare("SELECT q.*, u.nome as autor 
+          FROM quizzes q
+          JOIN usuarios u ON q.usuario_id = u.id");
 $stmt->execute();
 $popularQuizzes = $stmt->fetchAll();
 
 $pageTitle = "Página Inicial";
 include '../includes/header.php';
+
 ?>
 
 <div class="container">
@@ -52,7 +50,7 @@ include '../includes/header.php';
         <h2>Quizzes Populares</h2>
         <div class="quizzes-grid">
             <?php foreach ($popularQuizzes as $quiz): ?>
-                <?php include '../templates/quiz_card.php'; ?>
+                <?php include '../templates/quizz_card.php'; ?>
             <?php endforeach; ?>
         </div>
         <a href="quiz/list.php" class="btn">Ver Todos os Quizzes</a>

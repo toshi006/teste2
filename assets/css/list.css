@@ -97,11 +97,11 @@
 }
 
 /* Lista de Posts */
-.posts-list {
+.posts-list , .quizzes-list{
     margin-top: 2rem;
 }
 
-.post-card {
+.post-card ,.quiz-card {
     border: none;
     border-radius: 8px;
     overflow: hidden;
@@ -110,16 +110,16 @@
     margin-bottom: 1.5rem;
 }
 
-.post-card:hover {
+.post-card:hover , .quiz-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.post-card .card-body {
+.post-card .card-body, .quiz-card .card-body {
     padding: 1.5rem;
 }
 
-.post-meta {
+.post-meta , .card-text {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
@@ -159,7 +159,7 @@
     text-decoration: underline;
 }
 
-.post-excerpt {
+.post-excerpt, .mt-2 {
     color: #34495e;
     line-height: 1.6;
     margin-bottom: 1rem;
@@ -210,7 +210,17 @@
     margin-right: 5rem;
     
 }
-
+.quiz-card > .card-body > .buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    align-items: center;
+}
+.btn-group {
+    display: flex;
+    gap: 0.5rem;
+}
 /* Responsividade */
 @media (max-width: 768px) {
     .container {

@@ -52,14 +52,15 @@ h2 {
     margin-bottom: 1rem;
     border-left: 4px solid #00bcd4;
     padding-left: 0.75rem;
-    color: #00bcd4;
+    color: #black;
 }
 
 /* Grid de posts/quizzes */
 .posts-grid, .quizzes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
     gap: 1.5rem;
+    overflow-x: auto;
     margin-bottom: 1rem;
 }
 

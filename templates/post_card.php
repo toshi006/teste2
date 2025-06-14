@@ -13,6 +13,8 @@
 
 .post-card .card-body {
     padding: 1.25rem;
+    min-width: 360px;
+    min-height: 200px;
 }
 
 .post-card .badge {

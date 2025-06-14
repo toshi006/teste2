@@ -1,70 +1,107 @@
-<div class="card quiz-card mb-4" data-quiz-id="<?= $quiz['id'] ?>">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0"><?= htmlspecialchars($quiz['titulo']) ?></h5>
-    </div>
+<style>
+.quiz-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+    
+}
+
+.quiz-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+}
+
+.quiz-card .card-body {
+    padding: 1.25rem;
+    min-width: 360px;
+    min-height: 200px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.quiz-card .badge {
+    font-size: 0.8rem;
+    padding: 0.4em 0.7em;
+    border-radius: 8px;
+    background-color: #198754;
+
+}
+
+.quiz-card .card-title {
+    font-size: 1.2rem;
+    color: #222;
+    margin-bottom: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+.quiz-card .card-text {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.quiz-card .btn-outline-success {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+}
+
+.quiz-card .card-footer {
+    border-top: 1px solid #eee;
+    padding: 0.75rem 1.25rem;
+    background-color: #f8f9fa;
+    font-size: 0.88rem;
+    color: #666;
+}
+
+.quiz-card small {
+    font-size: 0.88rem;
+    color: #666;
+}
+
+.quiz-card .d-flex.align-items-center small {
+    margin-right: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+</style>
+<div class="card mb-4 shadow-sm quiz-card"> 
     
     <div class="card-body">
-        <p class="card-text"><?= htmlspecialchars($quiz['descricao']) ?></p>
-        
-        <div class="quiz-meta mb-3">
-            <div class="d-flex flex-wrap gap-2">
-                <span class="badge bg-info">
-                    <i class="bi bi-question-circle"></i> 
-                    <?= $quiz['questoes_count'] ?> questões
-                </span>
-                <span class="badge bg-success">
-                    <i class="bi bi-clock"></i> 
-                    <?= $quiz['duracao'] ?> min
-                </span>
-                <span class="badge bg-warning text-dark">
-                    <i class="bi bi-bar-chart"></i> 
-                    Dificuldade: <?= $quiz['dificuldade'] ?>
-                </span>
-            </div>
+        <div class="d-flex justify-content-between align-items-center mb-2"style="display: flex;gap: 5px;">
+            <span class="badge bg-success"><?= htmlspecialchars($quiz['categoria']) ?></span>
+            <small class="text-muted"><?= date('d/m/Y', strtotime($quiz['data_criacao'])) ?></small>
         </div>
         
+        <h5 class="card-title"><?= htmlspecialchars($quiz['titulo']) ?></h5>
+        <p class="card-text text-truncate">
+            <?= htmlspecialchars(mb_substr(strip_tags($quiz['descricao']), 0, 120, 'UTF-8')) ?>...
+        </p>
+        
         <div class="d-flex justify-content-between align-items-center">
-            <div class="quiz-author">
-                <img src="/sistema-educacional/uploads/avatars/<?= htmlspecialchars($quiz['autor_avatar'] ?: 'default.png') ?>" 
-                     class="rounded-circle me-2" 
-                     width="30" 
-                     height="30" 
-                     alt="<?= htmlspecialchars($quiz['autor_nome']) ?>">
-                <small><?= htmlspecialchars($quiz['autor_nome']) ?></small>
-            </div>
-            
-            <?php if ($quiz['realizado']): ?>
-                <span class="badge bg-success">
-                    <i class="bi bi-check-circle"></i> Completo
-                </span>
-            <?php else: ?>
-                <a href="/sistema-educacional/pages/quiz/take.php?id=<?= $quiz['id'] ?>" 
-                   class="btn btn-sm btn-primary">
-                    Iniciar Quiz
-                </a>
-            <?php endif; ?>
+            <a href="/teste2/pages/quiz/view.php?id=<?= $quiz['id'] ?>" 
+               class="btn btn-sm btn-outline-success">
+                Jogar Quiz
+            </a>
         </div>
     </div>
     
     <div class="card-footer bg-transparent">
-        <small class="text-muted">
-            Última atualização: <?= date('d/m/Y', strtotime($quiz['data_atualizacao'])) ?>
-        </small>
-        
-        <?php if ($quiz['realizado']): ?>
-            <div class="mt-2">
-                <div class="progress">
-                    <div class="progress-bar bg-success" 
-                         role="progressbar" 
-                         style="width: <?= $quiz['pontuacao'] ?>%" 
-                         aria-valuenow="<?= $quiz['pontuacao'] ?>" 
-                         aria-valuemin="0" 
-                         aria-valuemax="100">
-                        <?= $quiz['pontuacao'] ?>%
-                    </div>
-                </div>
-                <small class="d-block text-end">Sua pontuação</small>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <small><?= htmlspecialchars($quiz['autor']) ?></small>
             </div>
-        <?php endif; ?>
+        </div>
     </div>
 </div>

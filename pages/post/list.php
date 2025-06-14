@@ -118,29 +118,6 @@ include '../../includes/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
-        
-        <!-- Paginação -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <?php if ($current_page > 1): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $current_page - 1])) ?>">Anterior</a>
-                    </li>
-                <?php endif; ?>
-                
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <li class="page-item <?= $i == $current_page ? 'active' : '' ?>">
-                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
-                
-                <?php if ($current_page < $total_pages): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?<?= http_build_query(array_merge($_GET, ['page' => $current_page + 1])) ?>">Próxima</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
     <?php else: ?>
         <div class="alert alert-info">Nenhum post encontrado com os filtros selecionados.</div>
     <?php endif; ?>
