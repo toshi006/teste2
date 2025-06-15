@@ -15,10 +15,7 @@ if (!$quiz_id) {
 }
 
 // Buscar informações do quiz
-$stmt = $pdo->prepare("SELECT q.*, p.usuario_id as post_autor_id 
-                      FROM quizzes q 
-                      JOIN posts p ON q.post_id = p.id 
-                      WHERE q.id = ?");
+$stmt = $pdo->prepare("SELECT *, usuario_id as post_autor_id FROM quizzes WHERE id = ?");
 $stmt->execute([$quiz_id]);
 $quiz = $stmt->fetch();
 
@@ -60,21 +57,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // 2. Processar cada pergunta
         foreach ($_POST['perguntas'] as $pergunta_id => $pergunta_data) {
-            // Atualizar a pergunta
-            $stmt = $pdo->prepare("UPDATE perguntas SET texto = ?, tipo = ?, pontos = ? WHERE id = ?");
-            $stmt->execute([
-                $pergunta_data['texto'],
-                $pergunta_data['tipo'],
-                $pergunta_data['pontos'] ?? 1,
-                $pergunta_id
-            ]);
-            
-            // 3. Processar opções para perguntas de múltipla escolha
+            // Se for uma nova pergunta (id começa com 'new_'), inserir e obter o novo id
+            if (strpos($pergunta_id, 'new_') === 0) {
+                $stmt = $pdo->prepare("INSERT INTO perguntas (quiz_id, texto, tipo, pontos) VALUES (?, ?, ?, ?)");
+                $stmt->execute([
+                    $quiz_id,
+                    $pergunta_data['texto'],
+                    $pergunta_data['tipo'],
+                    $pergunta_data['pontos'] ?? 1
+                ]);
+                $real_pergunta_id = $pdo->lastInsertId();
+            } else {
+                // Atualizar a pergunta existente
+                $stmt = $pdo->prepare("UPDATE perguntas SET texto = ?, tipo = ?, pontos = ? WHERE id = ?");
+                $stmt->execute([
+                    $pergunta_data['texto'],
+                    $pergunta_data['tipo'],
+                    $pergunta_data['pontos'] ?? 1,
+                    $pergunta_id
+                ]);
+                $real_pergunta_id = $pergunta_id;
+            }
+
+            // Processar opções para perguntas de múltipla escolha
             if ($pergunta_data['tipo'] === 'multipla_escolha' && !empty($pergunta_data['opcoes'])) {
                 foreach ($pergunta_data['opcoes'] as $opcao_id => $opcao_data) {
                     if (empty($opcao_data['texto'])) continue;
-                    
-                    if ($opcao_id > 0) {
+
+                    if (is_numeric($opcao_id) && $opcao_id > 0 && strpos($pergunta_id, 'new_') !== 0) {
                         // Opção existente - atualizar
                         $stmt = $pdo->prepare("UPDATE opcoes SET texto = ?, correta = ? WHERE id = ?");
                         $stmt->execute([
@@ -86,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Nova opção - inserir
                         $stmt = $pdo->prepare("INSERT INTO opcoes (pergunta_id, texto, correta) VALUES (?, ?, ?)");
                         $stmt->execute([
-                            $pergunta_id,
+                            $real_pergunta_id,
                             $opcao_data['texto'],
                             $opcao_data['correta'] ? 1 : 0
                         ]);
@@ -118,7 +128,7 @@ include '../../includes/header.php';
         <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
     <?php endif; ?>
     
-    <form id="quiz-form" method="post">
+    <form id="quiz-form" method="post" onsubmit="return validarQuizForm();">
         <div class="card mb-4">
             <div class="card-body">
                 <h2 class="h4">Informações do Quiz</h2>
@@ -249,7 +259,7 @@ const perguntaTemplate = (index) => `
                         <div class="input-group-text">
                             <input type="radio" name="perguntas[new_${index}][correta]" value="0" class="form-check-input" checked>
                         </div>
-                        <input type="text" name="perguntas[new_${index}][opcoes][0][texto]" class="form-control" placeholder="Texto da opção" required>
+                        <input type="text" name="perguntas[new_${index}][opcoes][0][texto]" class="form-control" placeholder="Texto da opção">
                         <input type="hidden" name="perguntas[new_${index}][opcoes][0][correta]" value="1">
                     </div>
                 </div>
@@ -258,7 +268,7 @@ const perguntaTemplate = (index) => `
                         <div class="input-group-text">
                             <input type="radio" name="perguntas[new_${index}][correta]" value="1" class="form-check-input">
                         </div>
-                        <input type="text" name="perguntas[new_${index}][opcoes][1][texto]" class="form-control" placeholder="Texto da opção" required>
+                        <input type="text" name="perguntas[new_${index}][opcoes][1][texto]" class="form-control" placeholder="Texto da opção">
                         <input type="hidden" name="perguntas[new_${index}][opcoes][1][correta]" value="0">
                     </div>
                 </div>
@@ -309,7 +319,7 @@ function configurarPergunta(perguntaElement) {
                            value="${opcaoCount}" class="form-check-input">
                 </div>
                 <input type="text" name="perguntas[${prefix}${perguntaElement.dataset.index}][opcoes][${opcaoCount}][texto]" 
-                       class="form-control" placeholder="Texto da opção" required>
+                       class="form-control" placeholder="Texto da opção">
                 <input type="hidden" name="perguntas[${prefix}${perguntaElement.dataset.index}][opcoes][${opcaoCount}][correta]" value="0">
                 <button type="button" class="btn btn-outline-danger remove-opcao">
                     <i class="fas fa-times"></i>
@@ -353,6 +363,39 @@ function configurarPergunta(perguntaElement) {
             this.closest('.opcao').remove();
         });
     });
+}
+// Validação customizada do formulário para garantir que todos os campos obrigatórios estejam preenchidos
+function validarQuizForm() {
+    let valido = true;
+    let mensagens = [];
+
+    // Validar perguntas
+    document.querySelectorAll('.pergunta').forEach(pergunta => {
+        const textoPergunta = pergunta.querySelector('input[type="text"][name*="[texto]"]');
+        if (textoPergunta && !textoPergunta.value.trim()) {
+            valido = false;
+            mensagens.push('Preencha o texto de todas as perguntas.');
+        }
+
+        // Se for multipla escolha, validar opções
+        const tipo = pergunta.querySelector('.tipo-pergunta');
+        if (tipo && tipo.value === 'multipla_escolha') {
+            const opcoes = pergunta.querySelectorAll('.opcoes-list .opcao input[type="text"]');
+            let temOpcaoValida = false;
+            opcoes.forEach(opcao => {
+                if (opcao.value.trim()) temOpcaoValida = true;
+            });
+            if (!temOpcaoValida) {
+                valido = false;
+                mensagens.push('Cada pergunta de múltipla escolha deve ter pelo menos uma opção preenchida.');
+            }
+        }
+    });
+
+    if (!valido) {
+        alert(mensagens.join('\n'));
+    }
+    return valido;
 }
 </script>
 

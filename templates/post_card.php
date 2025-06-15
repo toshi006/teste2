@@ -14,9 +14,20 @@
 .post-card .card-body {
     padding: 1.25rem;
     min-width: 360px;
+    max-width: 360px;
     min-height: 200px;
+    max-height: 200px;
+    box-sizing: border-box;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
-
+.post-card .card-body .d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .post-card .badge {
     font-size: 0.75rem;
     padding: 0.4em 0.6em;
@@ -52,10 +63,13 @@
 .post-card .card-footer {
     border-top: 1px solid #eee;
     padding: 0.75rem 1.25rem;
-    background-color: #f9f9f9;
-    font-size: 0.85rem;
+    background-color: #f8f9fa;
+    font-size: 0.88rem;
     color: #666;
+    border: 1px solid #e0e0e0;
+    border-radius: 0 0 12px 12px;
 }
+
 
 .post-card .text-muted i {
     margin-right: 4px;

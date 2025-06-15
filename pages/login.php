@@ -41,8 +41,7 @@ include '../includes/header.php';
         </form>
         
         <div class="auth-links">
-            <a href="register.php">Criar nova conta</a>
-            <a href="forgot_password.php">Esqueci minha senha</a>
+            <a href="register.php">Ainda não tem uma conta? Cadastre-se aqui</a>
         </div>
     </div>
 </div>

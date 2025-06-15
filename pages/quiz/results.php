@@ -44,19 +44,49 @@ $perguntas = $stmt->fetchAll();
 
 foreach ($perguntas as &$pergunta) {
     if ($pergunta['tipo'] === 'multipla_escolha') {
-        $stmt = $pdo->prepare("SELECT * FROM opcoes WHERE pergunta_id = ?");
-        $stmt->execute([$pergunta['id']]);
-        $pergunta['opcoes'] = $stmt->fetchAll();
+        $stmt_opcoes = $pdo->prepare("SELECT * FROM opcoes WHERE pergunta_id = ?");
+        $stmt_opcoes->execute([$pergunta['id']]);
+        $pergunta['opcoes'] = $stmt_opcoes->fetchAll(); // Anexa todas as opções à pergunta
         
-        // Encontrar a opção correta
+        // Encontrar a opção correta para múltipla escolha
         foreach ($pergunta['opcoes'] as $opcao) {
             if ($opcao['correta']) {
-                $pergunta['resposta_correta'] = $opcao['texto'];
-                break;
+                $pergunta['resposta_correta'] = $opcao['texto']; // Anexa o texto da resposta correta
+                break; // Sai do loop interno, pois encontrou a correta
             }
         }
+    } elseif ($pergunta['tipo'] === 'verdadeiro_falso') {
+        // --- LÓGICA PARA VERDADEIRO/FALSO ---
+        $stmt_vf_correta = $pdo->prepare("SELECT texto FROM opcoes WHERE pergunta_id = ? AND correta = 1");
+        $stmt_vf_correta->execute([$pergunta['id']]);
+        $resposta_correta_vf = $stmt_vf_correta->fetchColumn(); // Obtém o texto ('Verdadeiro' ou 'Falso')
+        
+        if ($resposta_correta_vf) {
+            $pergunta['resposta_correta'] = $resposta_correta_vf; // Anexa o texto da resposta correta
+        }
+        // Você também pode querer buscar todas as opções ('Verdadeiro', 'Falso') para exibir
+        $stmt_vf_opcoes = $pdo->prepare("SELECT * FROM opcoes WHERE pergunta_id = ?");
+        $stmt_vf_opcoes->execute([$pergunta['id']]);
+        $pergunta['opcoes'] = $stmt_vf_opcoes->fetchAll(); // Anexa as opções 'Verdadeiro'/'Falso'
+        // --- FIM LÓGICA PARA VERDADEIRO/FALSO ---
+    } elseif ($pergunta['tipo'] === 'resposta_curta') {
+        // --- LÓGICA PARA RESPOSTA CURTA (Assumindo uma única resposta correta com 'correta=1') ---
+        $stmt_rc_correta = $pdo->prepare("SELECT texto FROM opcoes WHERE pergunta_id = ? AND correta = 1");
+        $stmt_rc_correta->execute([$pergunta['id']]);
+        $resposta_correta_rc = $stmt_rc_correta->fetchColumn();
+        
+        if ($resposta_correta_rc) {
+            $pergunta['resposta_correta'] = $resposta_correta_rc; // Anexa o texto da resposta correta
+        }
+        // Se a resposta curta pode ter MÚLTIPLAS respostas corretas, você faria:
+        // $stmt_rc_todas = $pdo->prepare("SELECT texto FROM opcoes WHERE pergunta_id = ?");
+        // $stmt_rc_todas->execute([$pergunta['id']]);
+        // $pergunta['respostas_corretas_possiveis'] = $stmt_rc_todas->fetchAll(PDO::FETCH_COLUMN);
+        // Ou adaptar de acordo com como você marca múltiplas respostas corretas na tabela 'opcoes'
+        // --- FIM LÓGICA PARA RESPOSTA CURTA ---
     }
 }
+
 unset($pergunta);
 
 $pageTitle = "Resultados: " . htmlspecialchars($quiz['titulo']);
@@ -110,34 +140,37 @@ include '../../includes/header.php';
                         </div>
                     </div>
                     
-                    <?php if ($resposta['pontuacao'] == 0): ?>
-                        <div class="correct-answer mt-3">
-                            <p class="mb-1"><strong>Resposta correta:</strong></p>
-                            <div class="ps-3">
-                                <?php 
-                                $pergunta_correspondente = array_filter($perguntas, function($p) use ($resposta) {
-                                    return $p['id'] == $resposta['pergunta_id'];
-                                });
-                                $pergunta_correspondente = reset($pergunta_correspondente);
-                                
-                                if ($resposta['pergunta_tipo'] === 'multipla_escolha' && isset($pergunta_correspondente['resposta_correta'])) {
-                                    echo htmlspecialchars($pergunta_correspondente['resposta_correta']);
-                                } elseif ($resposta['pergunta_tipo'] === 'verdadeiro_falso') {
-                                    echo "Verdadeiro"; // Isso deveria vir do banco de dados
-                                } else {
-                                    echo "Resposta correta não disponível";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                   <?php if ($resposta['pontuacao'] == 0): ?>
+    <div class="correct-answer mt-3">
+        <p class="mb-1"><strong>Resposta correta:</strong></p>
+        <div class="ps-3">
+            <?php 
+
+            $pergunta_correspondente = null;
+            foreach ($perguntas as $p) {
+                if ($p['id'] == $resposta['pergunta_id']) {
+                    $pergunta_correspondente = $p;
+                    break;
+                }
+            } if ($pergunta_correspondente && isset($pergunta_correspondente['resposta_correta'])) {
+                echo htmlspecialchars($pergunta_correspondente['resposta_correta']);
+            } elseif ($pergunta_correspondente && $pergunta_correspondente['tipo'] === 'resposta_curta' && isset($pergunta_correspondente['respostas_corretas_possiveis'])) {
+                echo htmlspecialchars(implode(', ', $pergunta_correspondente['respostas_corretas_possiveis']));
+            } else {
+                echo "Resposta correta não disponível para este tipo de pergunta ou não encontrada.";
+            }
+            ?>
+        </div>
+    </div>
+<?php endif; ?>
+
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
     
     <div class="text-center mt-4">
-        <a href="/pages/quiz/list.php" class="btn btn-primary">Voltar para Lista de Quizzes</a>
+        <a href="../../pages/quiz/list.php" class="btn btn-primary">Voltar para Lista de Quizzes</a>
     </div>
 </div>
 

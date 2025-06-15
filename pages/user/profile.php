@@ -78,7 +78,7 @@ include '../../includes/header.php';
                         <div class="quiz-item">
                             <h3><a href="../quiz/view.php?id=<?= $quiz['id'] ?>"><?= htmlspecialchars($quiz['titulo']) ?></a></h3>
                             <div class="quiz-meta">
-                                <span>Post: <?= htmlspecialchars($quiz['post_titulo']) ?></span> &bull;
+                                <span>Post: <?= htmlspecialchars($quiz['titulo']) ?></span> &bull;
                                 <span><?= formatDate($quiz['data_criacao'], 'd/m/Y') ?></span>
                             </div>
                         </div>

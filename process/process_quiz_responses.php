@@ -43,7 +43,7 @@ try {
             }
         } elseif ($pergunta['tipo'] === 'verdadeiro_falso') {
             // Buscar resposta correta (armazenada no texto da pergunta)
-            $stmt = $pdo->prepare("SELECT texto FROM perguntas WHERE id = ?");
+            $stmt = $pdo->prepare("SELECT texto FROM opcoes WHERE pergunta_id = ? AND correta = 1");
             $stmt->execute([$pergunta['id']]);
             $pergunta_data = $stmt->fetch();
             

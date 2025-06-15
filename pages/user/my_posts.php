@@ -48,7 +48,6 @@ include '../../includes/header.php';
                     <th>Título</th>
                     <th>Categoria</th>
                     <th>Data</th>
-                    <th>Visibilidade</th>
                     <th>Ações</th>
                 </tr>
             </thead>

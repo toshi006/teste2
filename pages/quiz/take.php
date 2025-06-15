@@ -4,13 +4,13 @@ require_once '../../includes/db.php';
 require_once '../../includes/functions.php';
 
 if (!isLoggedIn()) {
-    header("Location: /pages/login.php");
+    header("Location: ../../pages/login.php");
     exit;
 }
 
 $quiz_id = $_GET['id'] ?? null;
 if (!$quiz_id) {
-    header("Location: /pages/home.php");
+    header("Location: ../../pages/home.php");
     exit;
 }
 
@@ -20,7 +20,7 @@ $stmt->execute([$quiz_id]);
 $quiz = $stmt->fetch();
 
 if (!$quiz) {
-    header("Location: /pages/home.php?error=quiz_nao_encontrado");
+    header("Location: ../../pages/home.php?error=quiz_nao_encontrado");
     exit;
 }
 
@@ -30,7 +30,7 @@ $stmt = $pdo->prepare("SELECT id FROM respostas_usuarios
                       LIMIT 1");
 $stmt->execute([$_SESSION['user_id'], $quiz_id]);
 if ($stmt->fetch()) {
-    header("Location: results.php?id=$quiz_id");
+    header("Location: ../../pages/quiz/results.php?id=$quiz_id");
     exit;
 }
 
@@ -47,6 +47,8 @@ foreach ($perguntas as &$pergunta) {
     }
 }
 unset($pergunta);
+$action = $_POST['action'] ?? 'responder';
+
 
 $pageTitle = "Responder Quiz: " . htmlspecialchars($quiz['titulo']);
 include '../../includes/header.php';
@@ -62,7 +64,7 @@ include '../../includes/header.php';
         </div>
     <?php endif; ?>
     
-    <form id="quiz-form" action="/teste2/process/quiz_process.php" method="post">
+    <form id="quiz-form" action="../../process/quiz_process.php" method="post">
         <input type="hidden" name="quiz_id" value="<?= $quiz_id ?>">
         
         <?php foreach ($perguntas as $index => $pergunta): ?>
@@ -94,7 +96,7 @@ include '../../includes/header.php';
                                 <input class="form-check-input" type="radio" 
                                        name="resposta[<?= $pergunta['id'] ?>]" 
                                        id="vf_<?= $pergunta['id'] ?>_true" 
-                                       value="verdadeiro" required>
+                                       value="Verdadeiro" required>
                                 <label class="form-check-label" for="vf_<?= $pergunta['id'] ?>_true">
                                     Verdadeiro
                                 </label>
@@ -103,7 +105,7 @@ include '../../includes/header.php';
                                 <input class="form-check-input" type="radio" 
                                        name="resposta[<?= $pergunta['id'] ?>]" 
                                        id="vf_<?= $pergunta['id'] ?>_false" 
-                                       value="falso">
+                                       value="Falso">
                                 <label class="form-check-label" for="vf_<?= $pergunta['id'] ?>_false">
                                     Falso
                                 </label>

@@ -29,7 +29,12 @@ $popularQuizzes = $stmt->fetchAll();
 
 $pageTitle = "Página Inicial";
 include '../includes/header.php';
-
+if (count($recentPosts) > 3) {
+    $recentPosts = array_slice($recentPosts, 0, 3);
+}
+if (count($popularQuizzes) > 3) {
+    $popularQuizzes = array_slice($popularQuizzes, 0, 3);
+}
 ?>
 
 <div class="container">

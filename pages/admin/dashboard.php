@@ -131,7 +131,7 @@ include_once '../../includes/header.php';
                         <span class="badge bg-success-light text-success">+12%</span>
                     </div>
                     <p class="display-4 fw-bold mb-3"><?= $posts_count ?></p>
-                    <a href="manage_posts.php" class="text-decoration-none d-flex align-items-center">
+                    <a href="manage_post.php" class="text-decoration-none d-flex align-items-center">
                         Gerenciar <i class="bi bi-arrow-right-short ms-1"></i>
                     </a>
                 </div>

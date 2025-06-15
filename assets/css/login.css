@@ -81,7 +81,7 @@ body {
 .auth-links {
     margin-top: 1.5rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     font-size: 0.9rem;
 }
 

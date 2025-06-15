@@ -16,13 +16,20 @@
 .quiz-card .card-body {
     padding: 1.25rem;
     min-width: 360px;
+    max-width: 360px;
     min-height: 200px;
+    max-height: 200px;
+    box-sizing: border-box;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
-
+.quiz-card .card-body .d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .quiz-card .badge {
     font-size: 0.8rem;
     padding: 0.4em 0.7em;
@@ -62,6 +69,8 @@
     background-color: #f8f9fa;
     font-size: 0.88rem;
     color: #666;
+    border: 1px solid #e0e0e0;
+    border-radius: 0 0 12px 12px;
 }
 
 .quiz-card small {

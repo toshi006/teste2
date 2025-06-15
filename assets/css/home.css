@@ -52,7 +52,7 @@ h2 {
     margin-bottom: 1rem;
     border-left: 4px solid #00bcd4;
     padding-left: 0.75rem;
-    color: #black;
+    color: black;
 }
 
 /* Grid de posts/quizzes */
@@ -60,7 +60,6 @@ h2 {
     display: flex;
     flex-wrap: nowrap;
     gap: 1.5rem;
-    overflow-x: auto;
     margin-bottom: 1rem;
 }
 
