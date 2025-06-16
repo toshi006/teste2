@@ -56,6 +56,7 @@ include '../../includes/header.php';
                             <a href="../quiz/edit.php?id=<?= $quiz['id'] ?>" class="btn btn-small">Editar</a>
                             <form action="../quiz/delete.php" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este quiz?');">
                                 <input type="hidden" name="id" value="<?= $quiz['id'] ?>">
+                                <input type="hidden" name="return_to" value="my_quizzes.php">
                                 <button type="submit" class="btn btn-small btn-danger">Excluir</button>
                             </form>
                         </td>

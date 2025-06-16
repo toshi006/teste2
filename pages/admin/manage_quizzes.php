@@ -185,15 +185,15 @@ button:hover {
                     <td>—</td>
                     <td class="action">
                         <div class="btn-group">
-                            <a href="#" class="btn btn-sm btn-info" title="Visualizar">
+                            <a href="../../pages/quiz/take.php?id=<?= urlencode($quiz['id']) ?>" class="btn btn-sm btn-info" title="Visualizar">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <a href="#" class="btn btn-sm btn-warning" title="Editar">
+                            <a href="../../pages/quiz/edit.php?id=<?= urlencode($quiz['id']) ?>" class="btn btn-sm btn-warning" title="Editar">
                                 <i class="bi bi-pencil"></i>
                             </a>
                              <form class="btn btn-sm btn-warning" action="../quiz/delete.php" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este quizz?');">
-                                <input type="hidden" name="id" value="<?= $quiz['id'] ?>">
-                                <input type="hidden" name="return_to" value="manage_quiz.php">
+                                 <input type="hidden" name="id" value="<?= $quiz['id'] ?>">
+                                <input type="hidden" name="return_to" value="manage_quizzes.php">
                                 <button type="submit" ><i class="bi bi-trash"></i></button>
                             </form>
                         </div>

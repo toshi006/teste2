@@ -171,7 +171,6 @@ const perguntaTemplate = (index) => `
 </div>`;
 
 // --- FUNÇÕES AUXILIARES ---
-let perguntaCount = 0;
 
 // Adiciona campo de seleção para verdadeiro/falso
 function configurarPerguntaVF(perguntaElement, index) {
@@ -191,6 +190,81 @@ function configurarPerguntaVF(perguntaElement, index) {
     `;
 }
 
+// Função para configurar o botão de adicionar opção e eventos de rádio
+function configurarOpcoesMultiplaEscolha(perguntaElement, index) {
+    // Adicionar opção
+    perguntaElement.querySelector('.add-opcao').addEventListener('click', function() {
+        const opcoesList = perguntaElement.querySelector('.opcoes-list');
+        const opcaoCount = opcoesList.children.length;
+        const novaOpcao = document.createElement('div');
+        novaOpcao.className = 'opcao mb-2';
+        novaOpcao.innerHTML = `
+            <div class="input-group">
+                <div class="input-group-text">
+                    <input type="radio" name="perguntas[${index}][correta]" value="${opcaoCount}" class="form-check-input">
+                </div>
+                <input type="text" name="perguntas[${index}][opcoes][${opcaoCount}][texto]" class="form-control" placeholder="Texto da opção" required>
+                <input type="hidden" name="perguntas[${index}][opcoes][${opcaoCount}][correta]" value="0">
+                <button type="button" class="btn btn-outline-danger remove-opcao">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        opcoesList.appendChild(novaOpcao);
+        novaOpcao.querySelector('.remove-opcao').addEventListener('click', function() {
+            novaOpcao.remove();
+        });
+
+        // Atualizar valores corretos para os novos radios
+        perguntaElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const opcaoIndex = this.value;
+                const opcoes = perguntaElement.querySelectorAll('.opcao');
+                opcoes.forEach((opcao, i) => {
+                    const hiddenInput = opcao.querySelector('input[type="hidden"]');
+                    hiddenInput.value = i == opcaoIndex ? '1' : '0';
+                });
+            });
+        });
+    });
+
+    // Atualizar valores corretos para os radios existentes
+    perguntaElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const opcaoIndex = this.value;
+            const opcoes = perguntaElement.querySelectorAll('.opcao');
+            opcoes.forEach((opcao, i) => {
+                const hiddenInput = opcao.querySelector('input[type="hidden"]');
+                hiddenInput.value = i == opcaoIndex ? '1' : '0';
+            });
+        });
+    });
+}
+function atualizarIndicesPerguntas() {
+    const perguntas = document.querySelectorAll('.pergunta'); // Pega todas as perguntas visíveis
+    perguntas.forEach((perguntaElement, newIndex) => {
+        const oldIndex = perguntaElement.dataset.index; // Pega o número antigo da pergunta
+
+        // 1. Atualiza o número no título da pergunta (Ex: "Pergunta #1")
+        perguntaElement.querySelector('.card-header h3').textContent = `Pergunta #${newIndex + 1}`;
+
+        // 2. Atualiza o atributo 'data-index' (importante para o JS saber o número certo)
+        perguntaElement.dataset.index = newIndex;
+
+        // 3. Muda os nomes dos campos para o PHP receber certo (Ex: "perguntas[0][texto]" vira "perguntas[1][texto]")
+        perguntaElement.querySelectorAll('[name*="perguntas["]').forEach(input => {
+            const currentName = input.getAttribute('name');
+            const newName = currentName.replace(`perguntas[${oldIndex}]`, `perguntas[${newIndex}]`);
+            input.setAttribute('name', newName);
+        });
+
+        // 4. Se for Verdadeiro/Falso, ajusta os IDs internos para não dar conflito
+        const tipoSelect = perguntaElement.querySelector('.tipo-pergunta');
+        if (tipoSelect.value === 'verdadeiro_falso') {
+            configurarPerguntaVF(perguntaElement, newIndex); // Chama sua função existente
+        }
+    });
+}
 // Configura eventos para cada pergunta
 function configurarPergunta(perguntaElement) {
     const index = perguntaElement.dataset.index;
@@ -203,43 +277,7 @@ function configurarPergunta(perguntaElement) {
             opcoesContainer.innerHTML = opcoesOriginal;
             opcoesContainer.style.display = 'block';
             opcoesContainer.querySelectorAll('input[type="text"]').forEach(input => input.required = true);
-
-            // Adicionar opção
-            perguntaElement.querySelector('.add-opcao').addEventListener('click', function() {
-                const opcoesList = perguntaElement.querySelector('.opcoes-list');
-                const opcaoCount = opcoesList.children.length;
-                const novaOpcao = document.createElement('div');
-                novaOpcao.className = 'opcao mb-2';
-                novaOpcao.innerHTML = `
-                    <div class="input-group">
-                        <div class="input-group-text">
-                            <input type="radio" name="perguntas[${index}][correta]" value="${opcaoCount}" class="form-check-input">
-                        </div>
-                        <input type="text" name="perguntas[${index}][opcoes][${opcaoCount}][texto]" class="form-control" placeholder="Texto da opção" required>
-                        <input type="hidden" name="perguntas[${index}][opcoes][${opcaoCount}][correta]" value="0">
-                        <button type="button" class="btn btn-outline-danger remove-opcao">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `;
-                opcoesList.appendChild(novaOpcao);
-                novaOpcao.querySelector('.remove-opcao').addEventListener('click', function() {
-                    novaOpcao.remove();
-                });
-            });
-
-            // Atualizar valores corretos
-            perguntaElement.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const opcaoIndex = this.value;
-                    const opcoes = perguntaElement.querySelectorAll('.opcao');
-                    opcoes.forEach((opcao, i) => {
-                        const hiddenInput = opcao.querySelector('input[type="hidden"]');
-                        hiddenInput.value = i == opcaoIndex ? '1' : '0';
-                    });
-                });
-            });
-
+            configurarOpcoesMultiplaEscolha(perguntaElement, index);
         } else if (this.value === 'verdadeiro_falso') {
             configurarPerguntaVF(perguntaElement, index);
             opcoesContainer.style.display = 'block';
@@ -250,7 +288,9 @@ function configurarPergunta(perguntaElement) {
     });
 
     // Configuração inicial
-    if (tipoSelect.value === 'verdadeiro_falso') {
+    if (tipoSelect.value === 'multipla_escolha') {
+        configurarOpcoesMultiplaEscolha(perguntaElement, index);
+    } else if (tipoSelect.value === 'verdadeiro_falso') {
         configurarPerguntaVF(perguntaElement, index);
         opcoesContainer.style.display = 'block';
     }
@@ -268,12 +308,16 @@ function configurarPergunta(perguntaElement) {
 // Adiciona nova pergunta ao DOM
 document.getElementById('add-pergunta').addEventListener('click', () => {
     const container = document.getElementById('perguntas-container');
-    container.insertAdjacentHTML('beforeend', perguntaTemplate(perguntaCount));
+    // Não precisamos mais de 'perguntaCount' aqui. Pegamos o próximo índice pela quantidade de perguntas.
+    const newQuestionIndex = document.querySelectorAll('.pergunta').length; 
+
+    container.insertAdjacentHTML('beforeend', perguntaTemplate(newQuestionIndex));
     const novaPergunta = container.lastElementChild;
     configurarPergunta(novaPergunta);
-    perguntaCount++;
-});
 
+    // CHAME A FUNÇÃO AQUI: Organiza os números de todas as perguntas
+    atualizarIndicesPerguntas(); 
+});
 // Validação de campos visíveis antes do submit
 document.getElementById('quiz-form').addEventListener('submit', function(e) {
     document.querySelectorAll('.pergunta').forEach(pergunta => {

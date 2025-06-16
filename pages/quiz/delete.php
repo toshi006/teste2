@@ -13,6 +13,7 @@ if (!$quiz_id) {
     header("Location: /pages/home.php");
     exit;
 }
+$return_to = $_POST['return_to'] ?? 'home.php';
 
 // Buscar informações do quiz
 $stmt = $pdo->prepare("SELECT *, usuario_id as post_autor_id FROM quizzes WHERE id = ?");
@@ -47,9 +48,20 @@ try {
     $stmt->execute([$quiz_id]);
     
     $pdo->commit();
-    
-    header("Location: ../../pages/user/my_quizzes.php?success=quiz_excluido");
+    if ($return_to === 'my_quizzes.php') {
+        $return_to = '../../pages/user/my_quizzes.php';
+    } elseif ($return_to === 'list.php') {
+        $return_to = '../../pages/quiz/list.php';
+    } elseif ($return_to === 'manage_quizzes.php') {
+        $return_to = '../../pages/admin/manage_quizzes.php';
+    } else {
+        $return_to = '../../pages/user/home.php';
+    }
+    header("Location: $return_to?success=quizz_excluido");
     exit;
+    
+    // header("Location: ../../pages/user/my_quizzes.php?success=quiz_excluido");
+    // exit;
 } catch (PDOException $e) {
     $pdo->rollBack();
     header("Location: ../../pages/user/my_quizzes.php?error=erro_exclusao");
