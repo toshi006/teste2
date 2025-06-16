@@ -5,10 +5,9 @@ $quiz_id = filter_input(INPUT_POST, 'quiz_id', FILTER_VALIDATE_INT);
 
 // Validações básicas
 if (!$quiz_id) {
-    
+    header("Location: ../pages/home.php?error=quiz_invalido");
     exit;
 }
-
 // Verificar se o quiz existe
 $stmt = $pdo->prepare("SELECT id FROM quizzes WHERE id = ?");
 $stmt->execute([$quiz_id]);
@@ -87,7 +86,7 @@ try {
     $pdo->commit();
     
     // Redirecionar para página de resultados
-    header("Location: " . BASE_URL . "/pages/quiz/results.php?quiz_id=$quiz_id&pontuacao=$pontuacao_total");
+    header("Location: ../pages/quiz/results.php?id=$quiz_id&pontuacao=$pontuacao_total");
     exit;
 } catch (PDOException $e) {
     $pdo->rollBack();

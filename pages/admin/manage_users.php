@@ -17,7 +17,13 @@ try {
 ?>
 
 <div class="container mt-5">
+    
     <div class="admin-users-container">
+        <div class="mb-3">
+        <a href="../../pages/admin/dashboard.php" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar para o Dashboard
+        </a>
+    </div>
         <!-- Cabeçalho com título e botão -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="page-title">
@@ -37,6 +43,7 @@ try {
                     <table class="table table-hover align-middle mb-0 admin-users-table">
                         <thead class="table-light">
                             <tr>
+                                <th>ID</th>
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Tipo</th>
@@ -48,21 +55,21 @@ try {
                             <?php foreach ($users as $user): ?>
                                 <tr class="user-row">
                                     <td>
+                                        <span class="badge bg-secondary"><?= htmlspecialchars($user['id']) ?></span>
+                                    </td>
+                                    <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="user-avatar me-3">
-                                                <i class="bi bi-person-circle"></i>
-                                            </div>
                                             <div>
-                                                <span class="d-block fw-semibold"><?= $user['nome'] ?></span>
-                                                <small class="text-muted">ID: <?= $user['id'] ?></small>
+                                                <span class="d-block fw-semibold"><?= htmlspecialchars($user['nome']) ?></span>
+                                               
                                             </div>
                                         </div>
                                     </td>
-                                    <td><?= $user['email'] ?></td>
+                                    <td><?= htmlspecialchars($user['email']) ?></td>
                                     <td>
                                         <span class="badge rounded-pill bg-<?= $user['tipo'] === 'admin' ? 'danger' : ($user['tipo'] === 'teacher' ? 'primary' : 'success') ?>">
                                             <i class="bi bi-<?= $user['tipo'] === 'admin' ? 'shield-shaded' : ($user['tipo'] === 'teacher' ? 'person-video2' : 'person') ?> me-1"></i>
-                                            <?= ucfirst($user['tipo']) ?>
+                                            <?= ucfirst(htmlspecialchars($user['tipo'])) ?>
                                         </span>
                                     </td>
                                     <td>
@@ -71,12 +78,12 @@ try {
                                             <small class="text-muted"><?= date('H:i', strtotime($user['data_cadastro'])) ?></small>
                                         </div>
                                     </td>
-                                    <td class="text-end pe-4">
+                                    <td class="text-end pe-4 action">
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a href="../../pages/admin/user_edit.php?id=<?= $user['id'] ?>" class="btn btn-outline-primary" title="Editar">
+                                            <a href="../../pages/admin/user_edit.php?id=<?= urlencode($user['id']) ?>" class="btn btn-outline-primary" title="Editar">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <a href="../../process/admin/user_delete_process.php?id=<?= $user['id'] ?>" class="btn btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">
+                                            <a href="../../process/admin/user_delete_process.php?id=<?= urlencode($user['id']) ?>" class="btn btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>

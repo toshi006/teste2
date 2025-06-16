@@ -9,6 +9,9 @@
 .main-content > .container h1 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid #3498db;
+    
 }
 
 /* Botão criar novo */

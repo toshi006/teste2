@@ -61,6 +61,7 @@ include '../../includes/header.php';
                             <a href="../post/edit.php?id=<?= $post['id'] ?>" class="btn btn-small">Editar</a>
                             <form action="../post/delete.php" method="post" onsubmit="return confirm('Tem certeza que deseja excluir este post?');">
                                 <input type="hidden" name="id" value="<?= $post['id'] ?>">
+                                <input type="hidden" name="return_to" value="my_posts.php">
                                 <button type="submit" class="btn btn-small btn-danger">Excluir</button>
                             </form>
                         </td>

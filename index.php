@@ -1,3 +1,6 @@
+<?php
+echo __DIR__;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

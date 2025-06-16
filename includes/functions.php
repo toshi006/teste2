@@ -6,6 +6,21 @@
 /**
  * Redireciona para uma URL com mensagens flash opcionais
  */
+// Função para obter a URL base do projeto
+function getBaseUrl() {
+    // Verifica se já definimos a constante BASE_URL
+    if (defined('BASE_URL')) {
+        return BASE_URL;
+    }
+    
+    // Detecta automaticamente a URL base
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+    $host = $_SERVER['HTTP_HOST'];
+    $path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+    
+    define('BASE_URL', "{$protocol}://{$host}{$path}");
+    return BASE_URL;
+}
 function redirect($url, $messages = []) {
     if (!empty($messages)) {
         $_SESSION['flash_messages'] = $messages;

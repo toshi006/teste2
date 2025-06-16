@@ -60,7 +60,7 @@ $stmt->bindValue(count($params) + 1, (int)$per_page, PDO::PARAM_INT);
 $stmt->bindValue(count($params) + 2, (int)$offset, PDO::PARAM_INT);
 $stmt->execute();
 $posts = $stmt->fetchAll();
-include '../templates/quizz_card.php';
+
 // Contar total de quizzes para paginação
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM ($query) as total");
 $stmt->execute($params);
@@ -114,27 +114,20 @@ include '../../includes/header.php';
             <?php foreach ($posts as $quiz): ?>
                 <div class="quiz-card card mb-3">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h2 class="h5 card-title">
-                                    <a href="view.php?id=<?= $quiz['id'] ?>"><?= htmlspecialchars($quiz['titulo']) ?></a>
-                                </h2>
-                                <p class="card-text">
-                                    <small class="text-muted">
-                                        Autor: <?= htmlspecialchars($quiz['autor']) ?> | 
-                                        Categoria: <?= htmlspecialchars($quiz['categoria']) ?>
-                                    </small>
-                                </p>
+                        <div class="quiz-meta mb-2">
+                            <div class="quiz-meta mb-2">
+                                <span class="badge bg-secondary"><?= htmlspecialchars($quiz['categoria']) ?></span>
+                                <span class="text-muted ms-2">
+                                    Por <?= htmlspecialchars($quiz['autor']) ?> em <?= formatDate($quiz['data_criacao'], 'd/m/Y') ?>
+                                </span>
                             </div>
-                            <span class="badge bg-light text-dark">
-                                <?= formatDate($quiz['data_criacao'], 'd/m/Y') ?>
-                            </span>
                         </div>
-                        
+                        <h2 class="h5 card-title">
+                            <a href="view.php?id=<?= $quiz['id'] ?>"><?= htmlspecialchars($quiz['titulo']) ?></a>
+                        </h2>
                         <?php if (!empty($quiz['descricao'])): ?>
                             <p class="card-text mt-2"><?= htmlspecialchars($quiz['descricao']) ?></p>
                         <?php endif; ?>
-                        
                         <div class="buttons">
                             <a href="take.php?id=<?= $quiz['id'] ?>" class="btn btn-sm btn-primary">Responder Quiz</a>
 

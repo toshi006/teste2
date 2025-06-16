@@ -70,6 +70,7 @@ include '../../includes/header.php';
         <?php foreach ($perguntas as $index => $pergunta): ?>
             <div class="card mb-4 pergunta">
                 <div class="card-body">
+                    inputhidden
                     <h3 class="h5">
                         <span class="question-number"><?= $index + 1 ?>.</span>
                         <?= htmlspecialchars($pergunta['texto']) ?>
